@@ -1,4 +1,4 @@
-### 是否使用typedef定义struct结构体的区别。
+### 是否使用typedef定义struct结构体的区别
 - 1 顺序表结构 未使用typedef定义struct 编译通过 运行结果无误
 ```c
 #include<iostream>

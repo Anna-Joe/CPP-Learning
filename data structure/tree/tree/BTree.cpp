@@ -1,7 +1,6 @@
 #include <iostream>
 #include <stack>
 #include <queue>
-
 using namespace std;
 typedef struct BTNode* BTree;
 struct BTNode
@@ -11,20 +10,21 @@ struct BTNode
     BTree rightTree;
 };
 
-BTree createTree()
+void createTree(BTree* tree)
 {
-	BTree tree = new BTNode;
-    char exp;
-    cin >> exp;
-    if(exp == '#')
-        tree = NULL ;
+    char ch;
+    cin >> ch;
+    if(ch == '#')
+        *tree = NULL ;
     else
     {
-        tree->data = exp;
-        tree->leftTree = createTree();
-        tree->rightTree = createTree();
+		*tree=(BTree)malloc(sizeof(BTree));
+		if(!*tree)
+			exit(0);
+        (*tree)->data = ch;
+        createTree(&(*tree)->leftTree);
+        createTree(&(*tree)->rightTree);
     }
-	return tree;
 }
 
 bool isEmpty(BTree tree)
@@ -38,7 +38,7 @@ void preOrderTraversal(BTree tree)
 {
     if(isEmpty(tree))
         return;
-    printf("%s",tree->data);
+    printf("%c",tree->data);
     preOrderTraversal(tree->leftTree);
     preOrderTraversal(tree->rightTree);
 }
@@ -63,24 +63,26 @@ void preOrderTraversal2(BTree tree)
         b = b->leftTree;
         st.push(b);
     }
-    /*for(stack<BTree>::iterator it = st.begin(); it != st.end(); it++)
+	for(int i = 0; i < st.size()/sizeof(BTree); i ++)
     {
-        BTree t = *it;
+        BTree t = st.top();
         printf("%s",t->data);
-    }*/
+		st.pop();
+    }
 }
 
 void postOrderTraversal(BTree tree)
 {
     if(isEmpty(tree))
         return;
-    preOrderTraversal(tree->leftTree);
-    preOrderTraversal(tree->rightTree);
-    printf("%s",tree->data);
+    postOrderTraversal(tree->leftTree);
+    postOrderTraversal(tree->rightTree);
+    printf("%c",tree->data) ;
 }
 
 int main()
 {
-    BTree b =  createTree();
+    BTree b = new BTNode;
+	createTree(&b);
     postOrderTraversal(b);
 }
